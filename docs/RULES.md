@@ -47,6 +47,14 @@ Rooms are assigned by hand or auto-assigned in order. There is no room-quality l
 ## Adjudicators
 Assigned by hand in v1. There are no conflicts, ratings or roles. A debate can have a panel of any size.
 
+## How the draw engine reads these rules
+Implemented in `backend/engine/` (no Django, usable from a notebook). Where the rules were open to interpretation:
+- **Opponent wins** uses each opponent's total wins, byes included.
+- **Bye vs. rematch:** no rematch outranks the bye rule. If the natural bye team would leave the rest with only rematches, the next candidate sits out, which can mean a second bye before every team has had one.
+- **Side balance** only chooses sides within a pair. It never changes who plays whom.
+- **No look-ahead:** the engine pairs one round at a time. Fields of 8 or fewer teams can run out of fresh opponents before the last rounds and get a `NoValidDrawError` instead of a rematch. Fields of 9 or more completed 6 rounds in every simulated tournament.
+- A past debate with no result stops the draw (`MissingResultError`).
+
 ## Open questions
 - Do you want speaker points per team only, or per individual speaker later?
 - Should the number of preliminary rounds be fixed per tournament or changeable?
