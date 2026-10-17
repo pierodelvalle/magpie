@@ -14,6 +14,11 @@ import os
 from pathlib import Path
 from urllib.parse import urlparse
 
+import django_stubs_ext
+
+# Lets admin classes be subscripted (ModelAdmin[Team]) at runtime for mypy.
+django_stubs_ext.monkeypatch()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -129,3 +134,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Public API is read-only; writes need the admin login.
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
+}

@@ -1,6 +1,13 @@
 [tool.ruff]
 line-length = 100
 
+[tool.ruff.lint]
+# Django's Meta/admin class attributes are idiomatically mutable lists.
+ignore = ["RUF012"]
+
+[tool.ruff.format]
+quote-style = "single"
+
 [tool.mypy]
 plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
 strict = true
